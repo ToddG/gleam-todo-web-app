@@ -1,7 +1,7 @@
 import app/pages
 import app/pages/layout.{layout}
 import app/routes/item_routes.{items_middleware}
-import app/web.{type Context, Context}
+import app/web.{type Context}
 import gleam/http
 import lustre/element
 import wisp.{type Request, type Response}
@@ -11,6 +11,7 @@ pub fn handle_request(req: Request, ctx: Context) -> Response {
   use ctx <- items_middleware(req, ctx)
 
   case wisp.path_segments(req) {
+    // Homepage
     [] -> {
       [pages.home(ctx.items)]
       |> layout
@@ -32,7 +33,7 @@ pub fn handle_request(req: Request, ctx: Context) -> Response {
       use <- wisp.require_method(req, http.Patch)
       item_routes.patch_toggle_todo(req, ctx, id)
     }
-
+    // All the empty responses
     ["internal-server-error"] -> wisp.internal_server_error()
     ["unprocessable-entity"] -> wisp.unprocessable_entity()
     ["method-not-allowed"] -> wisp.method_not_allowed([])
