@@ -1,0 +1,1 @@
+insert into items (id, title, status) values ($1, $2, $3);

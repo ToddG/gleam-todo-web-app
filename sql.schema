@@ -1,0 +1,37 @@
+                                        Table "public._migrations"
+  Column   |            Type             | Collation | Nullable |                 Default                 
+-----------+-----------------------------+-----------+----------+-----------------------------------------
+ id        | integer                     |           | not null | nextval('_migrations_id_seq'::regclass)
+ name      | character varying(255)      |           | not null | 
+ createdat | timestamp without time zone |           | not null | 
+ appliedat | timestamp without time zone |           | not null | now()
+Indexes:
+    "_migrations_pkey" PRIMARY KEY, btree (id)
+
+                 Sequence "public._migrations_id_seq"
+  Type   | Start | Minimum |  Maximum   | Increment | Cycles? | Cache 
+---------+-------+---------+------------+-----------+---------+-------
+ integer |     1 |       1 | 2147483647 |         1 | no      |     1
+Owned by: public._migrations.id
+
+   Index "public._migrations_pkey"
+ Column |  Type   | Key? | Definition 
+--------+---------+------+------------
+ id     | integer | yes  | id
+primary key, btree, for table "public._migrations"
+
+               Table "public.items"
+ Column |  Type   | Collation | Nullable | Default 
+--------+---------+-----------+----------+---------
+ id     | uuid    |           | not null | 
+ title  | text    |           | not null | 
+ status | boolean |           | not null | 
+Indexes:
+    "items_pkey" PRIMARY KEY, btree (id)
+
+     Index "public.items_pkey"
+ Column | Type | Key? | Definition 
+--------+------+------+------------
+ id     | uuid | yes  | id
+primary key, btree, for table "public.items"
+
