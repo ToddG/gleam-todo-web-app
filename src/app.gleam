@@ -6,6 +6,8 @@ import gleam/erlang/process
 import mist
 import wisp
 import wisp/wisp_mist
+import pog
+import gleam/dynamic/decode
 
 pub fn main() {
   wisp.configure_logger()
@@ -19,7 +21,7 @@ pub fn main() {
 
   let ctx = Context(
     static_directory: static_directory(),
-    items: []
+    db: db_connection(),
   )
 
   let handler = router.handle_request(_, ctx)
@@ -36,4 +38,12 @@ pub fn main() {
 fn static_directory() -> String {
   let assert Ok(priv_directory) = wisp.priv_directory("app")
   priv_directory <> "/static"
+}
+
+fn db_connection() -> pog.Connection {
+    pog.default_config()
+    |> pog.host("localhost")
+    |> pog.database("todo_database")
+    |> pog.pool_size(15)
+    |> pog.connect
 }
