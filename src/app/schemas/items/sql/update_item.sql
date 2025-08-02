@@ -1,0 +1,1 @@
+update items set title = $2, status = $3 where id = $1;

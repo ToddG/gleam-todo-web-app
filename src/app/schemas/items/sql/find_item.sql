@@ -1,0 +1,1 @@
+select id, title, status from items where id = $1;
