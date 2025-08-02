@@ -13,17 +13,16 @@ version = "1.0.0"
 # https://gleam.run/writing-gleam/gleam-toml/.
 
 [dependencies]
+wisp = ">= 1.8.0 and < 2.0.0"
 dot_env = ">= 1.2.0 and < 2.0.0"
-gleam_erlang = ">= 0.33.0 and < 1.0.0"
-gleam_http = ">= 3.7.2 and < 4.0.0"
-gleam_json = ">= 2.2.0 and < 3.0.0"
-gleam_stdlib = ">= 0.43.0 and < 2.0.0"
-lustre = ">= 4.6.3 and < 5.0.0"
-mist = ">= 4.0.4 and < 5.0.0"
-wisp = ">= 1.5.1 and < 2.0.0"
-gtempo = { git = "git@github.com:ToddG/tempo.git", ref = "main" }
+gleam_erlang = ">= 1.2.0 and < 2.0.0"
+gleam_http = ">= 4.1.1 and < 5.0.0"
+gleam_json = ">= 3.0.2 and < 4.0.0"
+gleam_stdlib = ">= 0.62.0 and < 1.0.0"
+lustre = ">= 5.2.1 and < 6.0.0"
+mist = ">= 5.0.2 and < 6.0.0"
 
 [dev-dependencies]
-gleeunit = ">= 1.0.0 and < 2.0.0"
-cigogne = ">= 2.0.1 and < 3.0.0"
-squirrel = ">= 2.1.0 and < 3.0.0"
+cigogne = ">= 4.0.1 and < 5.0.0"
+gleeunit = ">= 1.6.1 and < 2.0.0"
+squirrel = ">= 4.2.0 and < 5.0.0"
