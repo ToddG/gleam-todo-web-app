@@ -23,11 +23,19 @@ pub fn item_from_json(id: String, title: String, status: Bool) -> Item {
   }
 }
 
-pub fn item_from_row(row: sql.ListItemsRow) -> Item {
+pub fn item_from_row(row: sql.FindItemRow) -> Item {
   Item(
     id: row.id,
     title: row.title,
     status: bool_to_status(row.status),
+  )
+}
+
+pub fn items_from_rows(row: sql.ListItemsRow) -> Item {
+  Item(
+  id: row.id,
+  title: row.title,
+  status: bool_to_status(row.status),
   )
 }
 

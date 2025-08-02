@@ -1,6 +1,12 @@
+import app/models/item
+import pog
+import gleam/io
+import gleam/string
+import gleam/list
+import app/schemas/items/sql
 import app/pages
 import app/pages/layout.{layout}
-import app/routes/item_routes.{items_middleware}
+import app/routes/item_routes
 import app/web.{type Context}
 import gleam/http
 import lustre/element
@@ -8,15 +14,23 @@ import wisp.{type Request, type Response}
 
 pub fn handle_request(req: Request, ctx: Context) -> Response {
   use req <- web.middleware(req, ctx)
-  use ctx <- items_middleware(req, ctx)
+//  use ctx <- items_middleware(req, ctx)
 
   case wisp.path_segments(req) {
     // Homepage
     [] -> {
-      [pages.home(ctx.items)]
-      |> layout
-      |> element.to_document_string_tree
-      |> wisp.html_response(200)
+      case sql.list_items(ctx.db) {
+        Ok(pog.Returned(_count, rows)) -> {
+          [pages.home(list.map(rows, item.items_from_rows))]
+          |> layout
+          |> element.to_document_string_tree
+          |> wisp.html_response(200)
+        }
+        Error(e) ->{
+          io.println_error(string.inspect(e))
+          wisp.bad_request()
+        }
+      }
     }
 
     ["items", "create"] -> {
