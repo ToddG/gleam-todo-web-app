@@ -1,6 +1,6 @@
 import gleam/io
 import youid/uuid
-import items/sql
+import app/schemas/items/sql
 import gleam/dynamic/decode
 import app/models/item.{type Item, create_item, status_to_bool}
 import app/web.{type Context, Context}
