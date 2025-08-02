@@ -1,10 +1,11 @@
-import app/models/item.{type Item}
+import pog
 import gleam/bool
 import gleam/string_tree
 import wisp
+import app/models/item
 
 pub type Context {
-  Context(static_directory: String, items: List(Item))
+  Context(static_directory: String, db: pog.Connection, items: List(item.Item))
 }
 
 pub fn middleware(

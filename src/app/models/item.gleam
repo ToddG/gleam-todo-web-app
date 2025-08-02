@@ -1,5 +1,5 @@
-import gleam/option.{type Option}
-import wisp
+import app/schemas/items/sql
+import youid/uuid
 
 pub type ItemStatus {
   Completed
@@ -7,15 +7,36 @@ pub type ItemStatus {
 }
 
 pub type Item {
-  Item(id: String, title: String, status: ItemStatus)
+  Item(id: uuid.Uuid, title: String, status: ItemStatus)
 }
 
-pub fn create_item(id: Option(String), title: String, completed: Bool) -> Item {
-  let id = option.unwrap(id, wisp.random_string(64))
-  case completed {
-    True -> Item(id, title, status: Completed)
-    False -> Item(id, title, status: Uncompleted)
+pub fn create_item(title: String, status: ItemStatus) -> Item {
+  Item(id: uuid.v4(), title: title, status: status)
+}
+
+// TEMPORARY, delete once not supporting json in session cookie
+pub fn item_from_json(id: String, title: String, status: Bool) -> Item {
+  case uuid.from_string(id) {
+    Ok(id) -> Item(id: id, title: title, status: bool_to_status(status))
+    // BUGBUG : this should probably return an error instead of create_item
+    _ -> create_item(title, bool_to_status(status))
   }
+}
+
+pub fn item_from_row(row: sql.FindItemRow) -> Item {
+  Item(
+    id: row.id,
+    title: row.title,
+    status: bool_to_status(row.status),
+  )
+}
+
+pub fn items_from_rows(row: sql.ListItemsRow) -> Item {
+  Item(
+  id: row.id,
+  title: row.title,
+  status: bool_to_status(row.status),
+  )
 }
 
 pub fn toggle_todo(item: Item) -> Item {
@@ -26,9 +47,16 @@ pub fn toggle_todo(item: Item) -> Item {
   Item(..item, status: new_status)
 }
 
-pub fn item_status_to_bool(status: ItemStatus) -> Bool {
+pub fn status_to_bool(status: ItemStatus) -> Bool {
   case status {
     Completed -> True
     Uncompleted -> False
+  }
+}
+
+fn bool_to_status(status: Bool) -> ItemStatus {
+  case status {
+    True -> Completed
+    False -> Uncompleted
   }
 }
