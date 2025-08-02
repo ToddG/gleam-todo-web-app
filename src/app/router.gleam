@@ -15,7 +15,7 @@ pub fn handle_request(req: Request, ctx: Context) -> Response {
     [] -> {
       [pages.home(ctx.items)]
       |> layout
-      |> element.to_document_string_builder
+      |> element.to_document_string_tree
       |> wisp.html_response(200)
     }
 

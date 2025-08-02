@@ -1,6 +1,6 @@
+import gleam/dynamic/decode
 import app/models/item.{type Item, create_item}
 import app/web.{type Context, Context}
-import gleam/dynamic
 import gleam/json
 import gleam/list
 import gleam/option.{None, Some}
@@ -72,24 +72,27 @@ pub fn patch_toggle_todo(req: Request, ctx: Context, item_id: String) {
   }
 }
 
+//pub const string: Decoder(String) = Decoder(decode_string)
+//
+//fn decode_string(data: Dynamic) -> #(String, List(DecodeError)) {
+//  run_dynamic_function(data, "String", dynamic_string)
+//}
+
 pub fn items_middleware(
   req: Request,
   ctx: Context,
   handle_request: fn(Context) -> Response,
 ) {
+  let item_decoder = {
+    use id <- decode.field("id", decode.string)
+    use title <- decode.field("title", decode.string)
+    use completed <- decode.field("completed", decode.bool)
+    decode.success(ItemsJson(id:, title:, completed:))
+  }
   let parsed_items = {
     case wisp.get_cookie(req, "items", wisp.PlainText) {
       Ok(json_string) -> {
-        let decoder =
-          dynamic.decode3(
-            ItemsJson,
-            dynamic.field("id", dynamic.string),
-            dynamic.field("title", dynamic.string),
-            dynamic.field("completed", dynamic.bool),
-          )
-          |> dynamic.list
-
-        let result = json.decode(json_string, decoder)
+        let result = json.parse(json_string, decode.list(of: item_decoder))
         case result {
           Ok(items) -> items
           Error(_) -> []
