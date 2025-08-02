@@ -72,12 +72,6 @@ pub fn patch_toggle_todo(req: Request, ctx: Context, item_id: String) {
   }
 }
 
-//pub const string: Decoder(String) = Decoder(decode_string)
-//
-//fn decode_string(data: Dynamic) -> #(String, List(DecodeError)) {
-//  run_dynamic_function(data, "String", dynamic_string)
-//}
-
 pub fn items_middleware(
   req: Request,
   ctx: Context,

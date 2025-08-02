@@ -5,9 +5,7 @@ help:	## print help message
 
 .PHONY: run
 run: 	## run service
-	/home/toddg/.asdf/installs/rust/1.82.0/bin/watchexec \
-		--restart --verbose --clear --wrap-process=session \
-		--stop-signal SIGTERM --exts gleam --watch src/ -- "gleam run"
+	DATABASE_URL=postgresql://postgres:1234@127.0.0.1:5432/app gleam run
 
 .PHONY: up
 up:	## start postgress
@@ -23,12 +21,16 @@ down:	## stop postgres
 	docker stop pg
 
 .PHONY: url
-url:	## print the database url
+url:	## print the database url so you can connect to the db with other tools
 	echo "DATABASE_URL=postgresql://postgres:1234@127.0.0.1:5432/app"
 
-.PHONY: migrate
-migrate: ## migrate the database
-	DATABASE_URL=postgresql://postgres:1234@127.0.0.1:5432/app gleam run -m cigogne up
+# BUGBUG: this doesn't work for some weird reason, the DATABASE_URL isn't getting
+# BUGBUG: picked up by the cigogne command. but it works fine when run from the
+# BUGBUG: command line. disabling for now and running the migrate as part of app startup
+#
+#.PHONY: migrate
+#migrate: 
+#	DATABASE_URL=postgresql://postgres:1234@127.0.0.1:5432/app gleam run -m cigogne up
 
 .PHONY: squirrel
 squirrel: ## generate schema bindings
