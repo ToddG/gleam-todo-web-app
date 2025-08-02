@@ -21,6 +21,8 @@ gleam_json = ">= 3.0.2 and < 4.0.0"
 gleam_stdlib = ">= 0.62.0 and < 1.0.0"
 lustre = ">= 5.2.1 and < 6.0.0"
 mist = ">= 5.0.2 and < 6.0.0"
+youid = ">= 1.5.1 and < 2.0.0"
+pog = ">= 4.1.0 and < 5.0.0"
 
 [dev-dependencies]
 cigogne = ">= 4.0.1 and < 5.0.0"
