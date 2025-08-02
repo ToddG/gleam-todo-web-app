@@ -1,3 +1,4 @@
+import youid/uuid
 import app/models/item.{type Item, Completed, Uncompleted}
 import gleam/list
 import lustre/attribute.{autofocus, class, name, placeholder}
@@ -56,7 +57,7 @@ fn item(item: Item) -> Element(t) {
       form(
         [
           attribute.method("POST"),
-          attribute.action("/items/" <> item.id <> "/completion?_method=PATCH"),
+          attribute.action("/items/" <> uuid.to_string(item.id) <> "/completion?_method=PATCH"),
         ],
         [button([class("todo__button")], [svg_icon_checked()])],
       ),
@@ -65,7 +66,7 @@ fn item(item: Item) -> Element(t) {
     form(
       [
         attribute.method("POST"),
-        attribute.action("/items/" <> item.id <> "?_method=DELETE"),
+        attribute.action("/items/" <> uuid.to_string(item.id) <> "?_method=DELETE"),
       ],
       [button([class("todo__delete")], [svg_icon_delete()])],
     ),

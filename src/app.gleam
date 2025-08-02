@@ -52,6 +52,8 @@ fn static_directory() -> String {
 }
 
 pub fn main() {
+  wisp.configure_logger()
+
   let db_pool_name = process.new_name("db_pool")
   let _db_migration_result = migrate_db()
   let _ = start_application_supervisor(db_pool_name)
