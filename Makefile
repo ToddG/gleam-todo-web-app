@@ -4,8 +4,10 @@ help:	## print help message
 
 
 .PHONY: run
-run: 	## run service
-	DATABASE_URL=postgresql://postgres:1234@127.0.0.1:5432/app gleam run
+run: 	## run service and restart on code changes
+	watchexec \
+		--restart --verbose --clear --wrap-process=session \
+		--stop-signal SIGTERM --exts gleam --watch src/ -- "DATABASE_URL=postgresql://postgres:1234@127.0.0.1:5432/app gleam run"
 
 .PHONY: up
 up:	## start postgress

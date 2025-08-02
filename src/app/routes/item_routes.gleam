@@ -21,7 +21,6 @@ pub fn post_create_item(req: Request, ctx: Context) {
     use item_title <- result.try(list.key_find(form.values, "todo_title"))
     let new_item = create_item(item_title, item.Uncompleted)
     let status_bool = status_to_bool(new_item.status)
-    let _ = sql.add_item(ctx.db, new_item.id, new_item.title, status_bool)
     sql.add_item(ctx.db, new_item.id, new_item.title, status_bool)
     |> result.replace_error(Nil)
   }

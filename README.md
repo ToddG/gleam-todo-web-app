@@ -6,6 +6,7 @@
 * make
 * gleam
 * brew
+* watchexec
 
 ### install deps
 
@@ -14,6 +15,7 @@
 ```bash
 sudo apt-get install postgresql-client make
 brew install gleam
+brew install watchexec
 ```
 
 ## quickstart
