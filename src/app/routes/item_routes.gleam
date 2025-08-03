@@ -57,11 +57,9 @@ pub fn patch_toggle_todo(_req: Request, ctx: Context, item_id: String) {
     Ok(u) -> {
       case sql.find_item(ctx.db, u) {
         Ok(pog.Returned(1, [row])) -> {
-          io.println(string.inspect(row))
-          let x = item.item_from_row(row)
-          io.println(string.inspect(x))
-          let y = item.toggle_todo(x)
-          let _ = sql.update_item_status(ctx.db, y.id, item.status_to_bool(y.status))
+          let original_item = item.item_from_row(row)
+          let toggled_item = item.toggle_todo(original_item)
+          let _ = sql.update_item_status(ctx.db, toggled_item.id, item.status_to_bool(toggled_item.status))
           wisp.redirect("/")
         }
         Error(e) -> {
