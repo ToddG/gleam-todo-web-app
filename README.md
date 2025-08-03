@@ -24,28 +24,30 @@ brew install watchexec
 
 Launch the postgresql database:
 
-    ```
-    make up
-    ```
+```
+make dbup
+```
 
 ### terminal 2
 
 Launch the server:
 
 ```
-make url
-
-# copy the database url and prefix the next command with it
-
 make run
 ```
 
 ### terminal 3
 
-Run the db migrations to create the items schema:
+Watch what's happening in the database:
 
-```DATABASE_URL=postgresql://postgres:1234@127.0.0.1:5432/app gleam run -m cigogne apply 1 ```
+```
+make psql
+```
 
+### in browser
 
+navigate to http://localhost/8000
+
+## background
 
 Read the article on Gleaming: [https://gleaming.dev/articles/building-your-first-gleam-web-app](https://gleaming.dev/articles/building-your-first-gleam-web-app)
