@@ -1,8 +1,8 @@
-import pog
+import app/models/item
 import gleam/bool
 import gleam/string_tree
+import pog
 import wisp
-import app/models/item
 
 pub type Context {
   Context(static_directory: String, db: pog.Connection, items: List(item.Item))

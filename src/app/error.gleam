@@ -2,6 +2,7 @@ import pog
 
 pub type CustomError {
   FormError(String)
-  PogError(pog.QueryError)
+  DbError(pog.QueryError, String)
+  DbError2(String)
+  UuidError(String)
 }
-

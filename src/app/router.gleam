@@ -1,20 +1,20 @@
 import app/models/item
-import pog
-import gleam/io
-import gleam/string
-import gleam/list
-import app/schemas/items/sql
 import app/pages
 import app/pages/layout.{layout}
 import app/routes/item_routes
+import app/schemas/items/sql
 import app/web.{type Context}
 import gleam/http
+import gleam/io
+import gleam/list
+import gleam/string
 import lustre/element
+import pog
 import wisp.{type Request, type Response}
 
 pub fn handle_request(req: Request, ctx: Context) -> Response {
   use req <- web.middleware(req, ctx)
-//  use ctx <- items_middleware(req, ctx)
+  //  use ctx <- items_middleware(req, ctx)
 
   case wisp.path_segments(req) {
     // Homepage
@@ -26,7 +26,7 @@ pub fn handle_request(req: Request, ctx: Context) -> Response {
           |> element.to_document_string_tree
           |> wisp.html_response(200)
         }
-        Error(e) ->{
+        Error(e) -> {
           io.println_error(string.inspect(e))
           wisp.bad_request()
         }
@@ -35,7 +35,7 @@ pub fn handle_request(req: Request, ctx: Context) -> Response {
 
     ["items", "create"] -> {
       use <- wisp.require_method(req, http.Post)
-      item_routes.post_create_item(req, ctx)
+      item_routes.create_item(req, ctx)
     }
 
     ["items", id] -> {
@@ -45,7 +45,7 @@ pub fn handle_request(req: Request, ctx: Context) -> Response {
 
     ["items", id, "completion"] -> {
       use <- wisp.require_method(req, http.Patch)
-      item_routes.patch_toggle_todo(req, ctx, id)
+      item_routes.toggle_todo(req, ctx, id)
     }
     // All the empty responses
     ["internal-server-error"] -> wisp.internal_server_error()
