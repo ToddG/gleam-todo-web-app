@@ -2,6 +2,6 @@ import pog
 
 pub type CustomError {
   FormError(String)
-  PogError(pog.QueryError)
+  PogError(pog.QueryError, String)
 }
 
