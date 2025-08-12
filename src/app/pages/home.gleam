@@ -1,10 +1,10 @@
-import youid/uuid
 import app/models/item.{type Item, Completed, Uncompleted}
 import gleam/list
 import lustre/attribute.{autofocus, class, name, placeholder}
 import lustre/element.{type Element, text}
 import lustre/element/html.{button, div, form, h1, input, span, svg}
 import lustre/element/svg
+import youid/uuid
 
 pub fn root(items: List(Item)) -> Element(t) {
   div([class("app")], [
@@ -57,7 +57,9 @@ fn item(item: Item) -> Element(t) {
       form(
         [
           attribute.method("POST"),
-          attribute.action("/items/" <> uuid.to_string(item.id) <> "/completion?_method=PATCH"),
+          attribute.action(
+            "/items/" <> uuid.to_string(item.id) <> "/completion?_method=PATCH",
+          ),
         ],
         [button([class("todo__button")], [svg_icon_checked()])],
       ),
@@ -66,7 +68,9 @@ fn item(item: Item) -> Element(t) {
     form(
       [
         attribute.method("POST"),
-        attribute.action("/items/" <> uuid.to_string(item.id) <> "?_method=DELETE"),
+        attribute.action(
+          "/items/" <> uuid.to_string(item.id) <> "?_method=DELETE",
+        ),
       ],
       [button([class("todo__delete")], [svg_icon_delete()])],
     ),

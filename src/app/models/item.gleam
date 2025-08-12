@@ -15,19 +15,11 @@ pub fn create_item(title: String, status: ItemStatus) -> Item {
 }
 
 pub fn item_from_row(row: sql.FindItemRow) -> Item {
-  Item(
-    id: row.id,
-    title: row.title,
-    status: bool_to_status(row.status),
-  )
+  Item(id: row.id, title: row.title, status: bool_to_status(row.status))
 }
 
 pub fn items_from_rows(row: sql.ListItemsRow) -> Item {
-  Item(
-  id: row.id,
-  title: row.title,
-  status: bool_to_status(row.status),
-  )
+  Item(id: row.id, title: row.title, status: bool_to_status(row.status))
 }
 
 pub fn toggle_todo(item: Item) -> Item {

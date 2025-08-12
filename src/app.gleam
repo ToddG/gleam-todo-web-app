@@ -1,13 +1,13 @@
-import gleam/otp/static_supervisor as supervisor
-import pog
-import envoy
-import gleam/erlang/process
-import gleam/result
 import app/router
 import app/web.{Context}
 import dot_env
 import dot_env/env
+import envoy
+import gleam/erlang/process
+import gleam/otp/static_supervisor as supervisor
+import gleam/result
 import mist
+import pog
 import wisp
 import wisp/wisp_mist
 
@@ -16,16 +16,18 @@ import cigogne/types
 
 pub fn migrate_db() -> Result(Nil, types.MigrateError) {
   // TODO: migrate_db should take the db connection from read_connection_uri below
-   let assert Ok(db_url) = envoy.get("DATABASE_URL")
-   let config = types.Config(
-     ..cigogne.default_config,
-     connection: types.UrlConfig(db_url)
-   )
-  use engine: cigogne.MigrationEngine <- result.try(cigogne.create_engine(config))
+  let assert Ok(db_url) = envoy.get("DATABASE_URL")
+  let config =
+    types.Config(..cigogne.default_config, connection: types.UrlConfig(db_url))
+  use engine: cigogne.MigrationEngine <- result.try(cigogne.create_engine(
+    config,
+  ))
   cigogne.apply_to_last(engine)
 }
 
-pub fn read_connection_uri(name: process.Name(pog.Message)) -> Result(pog.Config, Nil) {
+pub fn read_connection_uri(
+  name: process.Name(pog.Message),
+) -> Result(pog.Config, Nil) {
   use database_url <- result.try(envoy.get("DATABASE_URL"))
   pog.url_config(name, database_url)
 }
@@ -69,11 +71,12 @@ pub fn main() {
 
   let assert Ok(secret_key_base) = env.get_string("SECRET_KEY_BASE")
 
-  let ctx = Context(
-    static_directory: static_directory(),
-    items: [],
-    db: db_connection_pool
-  )
+  let ctx =
+    Context(
+      static_directory: static_directory(),
+      items: [],
+      db: db_connection_pool,
+    )
 
   let handler = router.handle_request(_, ctx)
 
@@ -85,4 +88,3 @@ pub fn main() {
 
   process.sleep_forever()
 }
-
