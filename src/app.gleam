@@ -1,4 +1,4 @@
-import gleam/otp/static_supervisor.{type Supervisor} as supervisor
+import gleam/otp/static_supervisor as supervisor
 import pog
 import envoy
 import gleam/erlang/process

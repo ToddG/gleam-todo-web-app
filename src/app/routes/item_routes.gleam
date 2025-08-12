@@ -1,6 +1,6 @@
-import app/models/item.{type Item}
+import app/models/item
 import app/schemas/items/sql
-import app/web.{type Context, Context}
+import app/web.{type Context}
 import gleam/int
 import gleam/io
 import gleam/list
@@ -10,27 +10,34 @@ import pog
 import wisp.{type Request}
 import youid/uuid
 
+
+const todo_key: String = "todo_title"
+
 pub fn post_create_item(req: Request, ctx: Context) -> wisp.Response {
   use form_data <- wisp.require_form(req)
-  case
-    form_data.values
-    |> list.key_find("todo_title")
-    |> result.map(item.create_item(_, item.Uncompleted))
-    |> result.try({
-        let f = fn (new_item: Item) {
-          sql.add_item(ctx.db, new_item.id, new_item.title, item.status_to_bool(new_item.status))
+
+  case list.key_find(form_data.values, todo_key){
+    Ok(v) -> {
+      let x = item.create_item(v, item.Uncompleted)
+      let r = sql.add_item(ctx.db, x.id, x.title, item.status_to_bool(x.status))
+      case r {
+        Ok(_) -> {
+          io.println("created: " <> string.inspect(x))
+          wisp.redirect("/")
         }
-        f(_)
-        })
-  {
-      Ok(_) -> {
-        wisp.redirect("/")
+        Error(e) -> {
+          io.println_error("error creating item: " <> string.inspect(x) <> ", error: " <> string.inspect(e))
+          wisp.bad_request()
+        }
       }
-      Error(_) -> {
-        wisp.bad_request()
-      }
+    }
+    Error(e) -> {
+      io.println_error( "foo: " <> string.inspect(e))
+      wisp.bad_request()
+    }
   }
 }
+
 
 pub fn delete_item(_req: Request, ctx: Context, item_id: String) {
   case

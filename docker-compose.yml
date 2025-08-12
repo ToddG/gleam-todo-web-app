@@ -1,0 +1,10 @@
+services:
+  database:
+    image: 'postgres:alpine'
+    container_name: "pg"
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: "app"

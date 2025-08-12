@@ -1,0 +1,75 @@
+[tools]
+gleam = "1"
+
+[tasks.help]
+description = "display help"
+run = '''cat << EOF
+To run this project, you need to install the dependencies:
+
+1. dependencies
+
+* [brew](https://brew.sh/)
+* [mise](https://mise.jdx.dev)
+* [docker engine](https://docs.docker.com/engine/install/)
+* [watchexec](https://github.com/watchexec/watchexec?tab=readme-ov-file#install)
+
+2. clone the gleam-todo-web-app repository and cd into it
+
+3. examine the available tasks
+
+	> mise tasks
+
+4. the common usage is
+
+	> mise run run
+
+5. the detailed useage is
+
+	> mise help 	// displays this message
+	> mise tasks 	// displays the tasks in this mise.toml file
+	> mise deps	// installs this projects dependencies
+	> mise css	// generate the tailwind css
+	> mise format	// gleam format's this projects gleam source code
+	> mise run	// gleam run's this project 
+
+That said, 'mise run' is what you will run most of the time.
+
+EOF
+'''
+
+[tasks.psql]
+description="launch psql client and attach to database"
+run = "psql postgresql://postgres:1234@127.0.0.1:5432/app"
+
+[tasks.squirrel]
+description="run squirrel to generate database adapter boilerplate"
+run = "DATABASE_URL=postgresql://postgres:1234@127.0.0.1:5432/app gleam run -m squirrel"
+
+[tasks.dburl]
+description="print the database url so you can connect to the db with other tools"
+run = "echo DATABASE_URL=postgresql://postgres:1234@127.0.0.1:5432/app"
+
+[tasks.dbdown]
+description="stop the postgresql server docker container"
+run = [
+    "docker compose down",
+    "docker ps"
+]
+
+[tasks.dbup]
+description = "start the postgresql server in a docker container"
+run = [
+    "docker compose up",
+    "docker ps"
+]
+
+[tasks.dev]
+description = "start the service"
+run = "DATABASE_URL=postgresql://postgres:1234@127.0.0.1:5432/app gleam run"
+
+[tasks.watch]
+description = "start the service with watchexec"
+run = """watchexec \
+         --restart --verbose --clear --wrap-process=session \
+         --stop-signal SIGTERM --exts gleam --watch src/ -- "DATABASE_URL=postgresql://postgres:1234@127.0.0.1:5432/app gleam run"
+"""
