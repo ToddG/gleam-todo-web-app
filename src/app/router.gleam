@@ -45,7 +45,7 @@ pub fn handle_request(req: Request, ctx: Context) -> Response {
 
     ["items", id, "completion"] -> {
       use <- wisp.require_method(req, http.Patch)
-      item_routes.patch_toggle_todo(req, ctx, id)
+      item_routes.toggle_todo(req, ctx, id)
     }
     // All the empty responses
     ["internal-server-error"] -> wisp.internal_server_error()

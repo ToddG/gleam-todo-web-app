@@ -1,3 +1,4 @@
+import logging
 import app/router
 import app/web.{Context}
 import dot_env
@@ -55,6 +56,7 @@ fn static_directory() -> String {
 
 pub fn main() {
   wisp.configure_logger()
+  logging.set_level(logging.Info)
 
   let db_pool_name = process.new_name("db_pool")
   let _db_migration_result = migrate_db()
