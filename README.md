@@ -51,3 +51,10 @@ navigate to http://localhost/8000
 ## background
 
 Read the article on Gleaming: [https://gleaming.dev/articles/building-your-first-gleam-web-app](https://gleaming.dev/articles/building-your-first-gleam-web-app)
+
+## warts and all that (architecture)
+
+### separation of models and schemas
+
+you'll notice that there is a strong separation between the database schemas `/app/schemas` and the models `/app/models`.
+this is on purpose. in short, the models are a higher level of abstraction than the schemas. the schemas are

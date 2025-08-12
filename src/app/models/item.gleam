@@ -14,15 +14,6 @@ pub fn create_item(title: String, status: ItemStatus) -> Item {
   Item(id: uuid.v4(), title: title, status: status)
 }
 
-// TEMPORARY, delete once not supporting json in session cookie
-pub fn item_from_json(id: String, title: String, status: Bool) -> Item {
-  case uuid.from_string(id) {
-    Ok(id) -> Item(id: id, title: title, status: bool_to_status(status))
-    // BUGBUG : this should probably return an error instead of create_item
-    _ -> create_item(title, bool_to_status(status))
-  }
-}
-
 pub fn item_from_row(row: sql.FindItemRow) -> Item {
   Item(
     id: row.id,
