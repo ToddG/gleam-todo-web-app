@@ -43,3 +43,20 @@ fn bool_to_status(status: Bool) -> ItemStatus {
     False -> Uncompleted
   }
 }
+
+pub fn item_repr(item: Item) -> String {
+  "(id: "
+  <> uuid.to_string(item.id)
+  <> ", title: "
+  <> item.title
+  <> ", status: "
+  <> item_status_repr(item.status)
+  <> ")"
+}
+
+fn item_status_repr(item_status: ItemStatus) -> String {
+  case item_status {
+    Completed -> "completed"
+    Uncompleted -> "uncompleted"
+  }
+}

@@ -21,11 +21,11 @@ pub fn create_item(req: Request, ctx: Context) -> wisp.Response {
     |> result.try(sql_add_item(ctx, _))
   {
     Ok(x) -> {
-      logging.log(Info, "create-item-succeeded: item=" <> string.inspect(x))
+      logging.log(Info, "create-item-succeeded: item=" <> item.item_repr(x))
       wisp.redirect("/")
     }
     Error(e) -> {
-      logging.log(Warning, "create-item-failed" <> string.inspect(e))
+      logging.log(Warning, "create-item-failed" <> error.custom_error_to_string(e))
       wisp.bad_request()
     }
   }
@@ -38,15 +38,15 @@ pub fn delete_item(
 ) -> wisp.Response {
   case
     item_id
-    |> uuid.from_string
+    |> uuid.from_string |> result.map_error(fn(_){error.Nil})
     |> result.map(sql_delete_item(ctx, _))
   {
-    Ok(x) -> {
-      logging.log(Info, "delete-item-succeeded: item=" <> string.inspect(x))
+    Ok(_) -> {
+      logging.log(Info, "delete-item-succeeded: item_id=" <> item_id)
       wisp.redirect("/")
     }
     Error(e) -> {
-      logging.log(Warning, "delete-item-failed-" <> string.inspect(e))
+      logging.log(Warning, "delete-item-failed-" <> error.custom_error_to_string(e))
       wisp.bad_request()
     }
   }
@@ -72,7 +72,7 @@ pub fn toggle_todo(
       wisp.redirect("/")
     }
     Error(e) -> {
-      logging.log(Warning, "toggle-todo-failed-" <> string.inspect(e))
+      logging.log(Warning, "toggle-todo-failed-" <> error.custom_error_to_string(e))
       wisp.bad_request()
     }
   }
